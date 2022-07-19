@@ -1,92 +1,207 @@
-# m1-polymorphism-pair
+# Polymorphism
 
+The purpose of this exercise is to provide you the opportunity to practice writing code using the principle of [polymorphism][what-is-polymorphism].
 
+## Learning Objectives
 
-## Getting started
+After completing this exercise, students will understand:
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+* How to design and create interfaces.
+* How to implement interfaces.
+* How to use classes polymorphically.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Evaluation Criteria & Functional Requirements
 
-## Add your files
+* The project must not have any build errors.
+* Appropriate variable names and data types are being used.
+* Code is presented in a clean, organized format.
+* The principle of [polymorphism][what-is-polymorphism] is being applied appropriately.
+* The code meets the specifications defined below.
+* The output for each program matches what is defined in the requirements.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+In order to practice applying polymorphism, your task is to create interface definitions and class implementations for the exercises defined below. In any of the cases, you may add attributes (i.e. properties) and other supporting methods to the classes in order to fully implement the interface.
+
+**Notes for All Classes**
+- X in the set column indicates it **should have a `set` accessor**.
+- Nothing in the set column indicates the property is a [derived property][derived-properties].
+- Readonly properties do not require a `set` accessor.
+
+### Toll Booth Calculator
+
+#### Vehicle Interface
+
+| Method                        | Return Type |
+| ----------------------------- | ----------- |
+| `calculateToll(int distance)` | `double`    |
+
+#### Car
+
+Create a `Car` class that implements the `Vehicle` interface. Additionally it has the following attributes and constructors.
+
+| Attribute   | Type    | Get | Set |
+| ----------- | ------- | --- | --- |
+| hasTrailer  | boolean | X   |     |
+
+| Constructor               | Description                                                          |
+| ------------------------- | -------------------------------------------------------------------- |
+| `Car(boolean hasTrailer)` | Creates a new car indicating whether or not it is pulling a trailer. |
+
+Tolls for cars are based upon distance.
+
+    toll = distance * 0.020
+    if pulling a trailer then toll = toll + 1.00
+
+#### Truck
+
+Create a `Truck` class that implements the `Vehicle` interface. Additionally it has the following attributes and constructors.
+
+| Property      | Type | Get | Set |
+| ------------- | ---- | --- | --- |
+| numberOfAxles | int  | X   |     |
+
+| Constructor                | Description                                           |
+| -------------------------- | ----------------------------------------------------- |
+| `Truck(int numberOfAxles)` | Creates a new truck indicating how many axles it has. |
+
+Tolls for trucks are based upon the number of axles.
+
+> | Axles | Per Mile |
+> | ----- | -------- |
+> | 4     | 0.040    |
+> | 6     | 0.045    |
+> | 8+    | 0.048    |
+>
+> toll = rate per mile \* distance
+
+#### Tank
+
+Create a `Tank` class that implements the `Vehicle` interface.
+
+All military vehicles travel free on the toll roads.
+
+    toll = 0
+
+#### TollCalculator.java
+
+Create a command line program named TollCalculator. The application will not accept any input.
+
+Following the approach discussed in the lecture, create a `List<Vehicle>` that represents all of the vehicles that travel through a particular tollbooth. Using a random number for distance (10 to 240) calculate the tolls for each vehicle so that you can:
+
+- Indicate each vehicle type, the distance traveled, and the calculated toll
+- Indicate the sum of all miles traveled and total tollbooth revenue
+- You should not need to check the type of Vehicle in the main method when displaying the output
+
+_Expected output using **random** distances_
 
 ```
-cd existing_repo
-git remote add origin https://git.techelevator.com/campuses/nlr/jul-2022/java-purple/student-pairs/week3/m1-polymorphism-pair.git
-git branch -M main
-git push -uf origin main
+Vehicle            Distance Traveled      Toll $
+------------------------------------------------
+Car                100                    $2.00
+Car (with trailer) 75                     $2.50
+Tank               240                    $0.00
+Truck (4 axels)    150                    $6.75
+Truck (6 axels)    101                    $4.55
+Truck (8 axels)    180                    $8.64
+
+Total Miles Traveled: 846
+Total Tollbooth Revenue: $24.44
 ```
 
-## Integrate with your tools
+### Postage Calculator
 
-- [ ] [Set up project integrations](https://git.techelevator.com/campuses/nlr/jul-2022/java-purple/student-pairs/week3/m1-polymorphism-pair/-/settings/integrations)
+#### DeliveryDriver Interface
 
-## Collaborate with your team
+| Method                                       | Return Type | Description                                                                                                |
+| -------------------------------------------- | ----------- | ---------------------------------------------------------------------------------------------------------- |
+| `calculateRate(int distance, double weight)` | `double`    | calculateRate takes the distance being traveled (in miles) and the weight in ounces to calculate the rate. |
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+#### Postal Service
 
-## Test and Deploy
+Create PostalService classes that implements the `DeliveryDriver` interface. The Postal Service deals with pounds and ounces.
 
-Use the built-in continuous integration in GitLab.
+The rate is calculated based on the following rate table:
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+```
+|--------|-----------|-----------|-----------|
+|        | 1st Class | 2nd Class | 3rd Class |
+| Ounces | Per Mile  | Per Mile  | Per Mile  |
+|--------|-----------|-----------|-----------|
+| 0 - 2  |   0.035   |   0.0035  |   0.0020  |
+| 3 - 8  |   0.040   |   0.0040  |   0.0022  |
+| 9 - 15 |   0.047   |   0.0047  |   0.0024  |
+| Pounds |           |           |           |
+| 1 - 3  |   0.195   |   0.0195  |   0.0150  |
+| 4 - 8  |   0.450   |   0.0450  |   0.0160  |
+| 9+     |   0.500   |   0.0500  |   0.0170  |
+|--------|-----------|-----------|-----------|
 
-***
+rate = per mile rate * distance
+```
 
-# Editing this README
+**HINT** Consider how multiple classes per delivery type (1st class, 2nd class, 3rd class) could help. How might your code be impacted if a new delivery type is added?
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+#### FexEd
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+Create a FexEd class that implements the `DeliveryDriver` interface.
 
-## Name
-Choose a self-explaining name for your project.
+FexEd charges a flat rate for all packages, but may apply extra charges based upon weight and distance.
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+    rate = 20.00
+    If distance > 500 miles then rate = rate + 5.00
+    If weight > 48 ounces then rate = rate + 3.00
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+#### SPU
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+Create SPU classes that implement the `DeliveryDriver` interface.
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+Each class will determine the rate based on the rate type, weight (in lbs), and distance.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+    If "4-Day Ground" then rate = (weight * 0.0050) * distance.
+    If "2-Day Business" then rate = (weight * 0.050) * distance.
+    If "Next Day" then rate = (weight * 0.075) * distance.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+#### PostageCalculator.java
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+Create a command line program named PostageCalculator. The application will accept the weight of the package, whether or not the weight is in pounds or ounces, and the distance the package will be travelling. The output will display the rates for all possible delivery methods based on the inputs provided by the customer.
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+You *should not* need to check the type of DeliveryDriver in the main method when displaying the output.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+_Expected output_
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+```
+Please enter the weight of the package? 15
+(P)ounds or (O)unces? O
+What distance will it be traveling? 340
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+Delivery Method                 $ cost
+--------------------------------------
+Postal Service (1st Class)      $15.98
+Postal Service (2nd Class)      $1.60
+Postal Service (3rd Class)      $0.82
+FexEd                           $20.00
+SPU (4-Day Ground)              $1.59
+SPU (2-Day Business)            $15.94
+SPU (Next Day)                  $23.91
+```
 
-## License
-For open source projects, say how it is licensed.
+## Getting Started
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+* Import the polymorphism-exercises project into Eclipse.
+* You should create a folder for each command line application you are working on inside of the `src/main/java/com/techelevator` folder.
+    * One folder will be named `PostageCalculator`
+    * The other folder will be named `TollBoothCalculator`
+    * The code for each of the programs, to include classes and interfaces for each, will be in each of their respective folders.
+* Each of the programs will be a console application. This will be how you will verify your code works as expected.
+
+## Tips and Tricks
+
+* When writing your program, a question to ask yourself to ensure you are writing your code polymorphically is, "If a new requirement were provided, how much of my code will I need to change?" If the answer to this question is, "quite a bit", then you may have the opportunity to improve the quality of your code. Your code should be "open to extension, and closed for modification.[open-closed-principle]." In other words, what will happen if the Postal Service adds a new Economy delivery type? What would happen to the Toll Booth calculator if a new requirement were added for another type of vehicle?
+* As you work on this assignment, you will need to verify that the application is working as expected for all of the scenarios outlined in the requirements. To do this, you will be practicing a form of testing referred to as ["Manual Testing"][what-is-manual-testing]. Ideally, you will write automated unit tests to verify the applications you work on behave as expected. However, manual testing is equally important, and is a skill that is important on software development teams.
+* Be sure you are verifying all of the execution paths for the application you are working on. For instance, verify that the postage calculator determines the correct rate when the distance is greater than 500 miles, and when the distance is less than 500 miles. Verify that the rates for each of the classes is being calculated correctly as well. Use the rate tables specified in the requirements for guidance.
+
+---
+
+[derived-properties]: https://www.uml-diagrams.org/derived-property.html
+[open-closed-principle]: https://stackify.com/solid-design-open-closed-principle/
+[what-is-manual-testing]: https://www.toolsqa.com/software-testing/manual-testing/
+[what-is-polymorphism]: http://book.techelevator.com/java/55-polymorphism/05-what-is-polymorphism.html
