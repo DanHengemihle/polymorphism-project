@@ -21,9 +21,12 @@ public class Car implements Vehicle {
 
     @Override
     public String toString() {
-        return "Car{" +
-                "hasTrailer=" + hasTrailer +
-                '}';
+        if (hasTrailer == false) {
+            return "Car                   ";
+        }
+        if (hasTrailer == true) {
+
+        }return "Car " + "(with trailer)    ";
     }
 
     public boolean isHasTrailer() {

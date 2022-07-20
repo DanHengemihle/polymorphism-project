@@ -9,7 +9,10 @@ public class Truck implements Vehicle {
         this.numberOfAxles = numberOfAxles;
     }
 
-
+    @Override
+    public String toString() {
+        return "Truck " + "(" + numberOfAxles + " axles)       ";
+    }
 
     @Override
     public double calculateToll(int distance) {
